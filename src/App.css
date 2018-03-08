@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+
+
+html {
+  text-align: center;
+  min-height: 100%;
+}
+
+/* LOGIN/HOME PAGE STYLING */
+.login {
+  height: 100vh;
+  display: flex;
+  background-image: linear-gradient(99deg, #ff70a6, #ff9770 40%, #ffd670 73%, #e9ff70);
+}
+
+.loginButtonContainer {
+  width: 420px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+  background-image: linear-gradient(97deg, #ff7a6e, #ff9770);
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1), 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.loginHeader {
+  font-size: 72px;
+  margin: 0;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.loginButton {
+  width: 340px;
+  height: 36px;
+  margin-bottom: 30px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  color: white;
+  border-radius: 1px;
+  background-image: radial-gradient(circle at 50%-46%, #737373, #403d39);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0 , 0, 0, 0.2);
+  border: none;
+}
+
+.loginLogo {
+  width: 140px;
+  height: 140px;
+  margin-top: 30px;
+}
+
+.Home {
+  height: 100vh;
+  background-color: #F2F2F2;
+}
+
+.NavBar {
+  width: 100%;
+  height: 75px;
+  background-image: linear-gradient(97deg, #ff7a6e, #ff9970);
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1), 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lefthandIcons {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 200px;
+}
+
+.heloTitle {
+  color: white;
+}
+
+.homeIcon,
+.searchIcon {
+  width: 35px;
+  height: 35px;
+}
+
+.navBarLogout {
+  width: 200px;
+  margin-right: 200px;
+  color: white;
+  border: none;
+  background-color: transparent;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  border-style: none;
+}
+
+.dashboardTitle {
+  width: 200px;
+  color: white;
+}
+
+.Home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.middleHomeContainer {
+  width: 60%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.topTwoContainers {
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  height: 180px;
+  border: none;
+  background: white;
+}
+
+.homeNameAndImageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.homeProfileAvatar {
+  width: 160px;
+  height: 160px;
+  border: 3px solid #FF9770; 
+}
+
+.homeProfileIcons {
+  width: 160px;
+  height: 160px;
+  margin-left: 12px;
+}
+
+.homeEditProfileButton {
+  width: 160px;
+  height: 40px;
+}
+
+.homeBottomContainer {
+  width: 95%;
+  height: 65%;
+  border: none;
+  margin-top: 40px;
+  background: white;
+}
+
+.homeTitleAndSelect {
+  display: flex;
+  justify-content: space-between;
+}
+
+.avatarImage {
+  width: 160px;
+  height: 160px;
+}
+
+.sortingDropdown {
+  width: 160px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.sortedBy {
+  width: 275px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between
+}
+
+.recommendedFriends {
+  margin-left: 10px;
+}
