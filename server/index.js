@@ -81,14 +81,14 @@ app.get('/api/auth/authenticated', function(req, res){
     }
 })
 
-app.get('/api/auth/logout', function(req, res){
+app.get('/auth/logout', function(req, res){
     req.logOut();
-    res.redirect('http://localhost:3000/');
+    res.redirect(`https://downtownes.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3000&client_id=${process.env.CLIENT_ID}`);
 })
 
 
 //User Endpoints
-
+app.patch('/api/user/patch/:id', userController.updateUserInfo);
 
 
 

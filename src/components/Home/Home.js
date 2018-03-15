@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
 import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getUser } from '../../ducks/reducer';
 import '../../App.css';
 
 
-export default class Home extends Component {
-    constructor() {
-        super();
-        this.state = {
-            user: []
-        }
+class Home extends Component {
+    constructor(props) {
+        super(props);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         axios.get('/api/auth/authenticated').then(res => {
-            console.log(res);
-            this.setState({
-                user: res.data
-            })
+            console.log(res.data)
+            this.props.getUser(res.data);
         })
     }
 
+
+
+
     render() {
+        const { getUser } = this.props; //this ONLY WORKS INSIDE THE METHOD
+        console.log(this.props.user)
         return (
             <div className="Home">
                 <NavBar />
@@ -29,15 +32,15 @@ export default class Home extends Component {
                     <div className="topTwoContainers">
                         <div className="homeNameAndImageContainer">
                             <div className="homeProfileAvatar">
-                                <img className="avatarImage" src={this.state.user.profilepic} />
+                                <img className="avatarImage" src={this.props.user.profilepic} />
                             </div>
                             <div className="homeProfileIcons">
-                                <h4>{this.state.user.firstname + '' + this.state.user.lastname}</h4>
-                                <button className="homeEditProfileButton">Edit Profile</button>
+                                <h4>{this.props.user.firstname + '' + this.props.user.lastname}</h4>
+                                <Link to="/profile"><button className="homeEditProfileButton">Edit Profile</button></Link>
                             </div>
                         </div>
-                        <div>
-                            <p></p>
+                        <div className="welcomeToHelo">
+                            <p>Welcome to Helo! Find recommended friends based on your similarities, and even search for them by name. The more you update your profile, the better recommendations we can make!</p>
                         </div>
                     </div>
                     <div className="homeBottomContainer">
@@ -56,9 +59,31 @@ export default class Home extends Component {
                                 </select>
                             </div>
                         </div>
+                        <div className="recommendedFriendsContainer">
+                            <div className="recommendedFriend">
+                                <div className="imageAndNameContainer">
+                                    <img className="recommendedFriendPic" />
+                                    <div className="nameContainer">
+                                        <h3 className="recommendedFriendName">Townes</h3>
+                                        <h3 className="recommendedFriendName">Falcon</h3>
+                                    </div>
+                                </div>
+                                <button className="addFriendButton">Add Friend</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         )
     }
 }
+
+
+function mapStateToProps(state) {
+    const { user } = state;
+
+    return {
+        user
+    }
+}
+export default connect(mapStateToProps, { getUser })(Home);
