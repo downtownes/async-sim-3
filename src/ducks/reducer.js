@@ -8,7 +8,8 @@ const initialState = {
     hobby: '',
     birthDay: '',
     birthMonth: '',
-    birthYear: ''
+    birthYear: '',
+    allUsers: []
 }
 
 const USER = "USER";
@@ -21,6 +22,7 @@ const HOBBY = "HOBBY";
 const BIRTHDAY = "BIRTHDAY";
 const BIRTHMONTH = "BIRTHMONTH";
 const BIRTHYEAR = "BIRTHYEAR";
+const ALLUSERS = "ALLUSERS";
 
 function reducer(state = initialState, action) {
     switch (action.type) {
@@ -42,6 +44,8 @@ function reducer(state = initialState, action) {
             return Object.assign({}, state, { birthMonth: action.payload });
         case BIRTHYEAR:
             return Object.assign({}, state, { birthYear: action.payload });
+        case ALLUSERS:
+            return Object.assign({}, state, {allUsers: action.payload})
         default:
             return state;
     }
@@ -119,7 +123,12 @@ export function updateBirthYear(birthYear) {
     }
 }
 
-
+export function getAllUsers(allUsers) {
+    return {
+        type: ALLUSERS,
+        payload: allUsers
+    }
+}
 
 
 

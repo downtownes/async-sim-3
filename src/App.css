@@ -200,6 +200,8 @@ html {
 .recommendedFriendsContainer {
   width: 95%;
   height: 100%;
+  display: flex;
+  flex-wrap: wrap;
   overflow: scroll;
   overflow-x: hidden;
 }
@@ -215,6 +217,8 @@ html {
   background-color: #ffffff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0
   rgba(0, 0, 0, 0.2);
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .imageAndNameContainer {

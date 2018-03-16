@@ -92,5 +92,10 @@ app.patch('/api/user/patch/:id', userController.updateUserInfo);
 
 
 
+//RECOMMENDED ENDPOINTS
+app.get('/api/recommended', userController.getAllUsers);
+
+
+
 
 app.listen(PORT, () => { console.log(`Listening on port: ${PORT}`) })

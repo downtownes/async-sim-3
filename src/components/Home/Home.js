@@ -3,19 +3,23 @@ import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getUser } from '../../ducks/reducer';
+import { getUser, getAllUsers } from '../../ducks/reducer';
 import '../../App.css';
 
 
 class Home extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            recommendedUsers: []
+        }
     }
 
-    componentWillMount() {
-        axios.get('/api/auth/authenticated').then(res => {
+    componentDidMount() {
+        axios.all([axios.get('/api/auth/authenticated'), axios.get('/api/recommended')]).then(res => {
             console.log(res.data)
-            this.props.getUser(res.data);
+            this.props.getUser(res[0].data);
+            this.props.getAllUsers(res[1].data);
         })
     }
 
@@ -24,7 +28,21 @@ class Home extends Component {
 
     render() {
         const { getUser } = this.props; //this ONLY WORKS INSIDE THE METHOD
-        console.log(this.props.user)
+        console.log(this.props.allUsers)
+
+        let userCards = this.props.allUsers.map((val, i) => {
+            return <div key={i} className="recommendedFriend">
+                <div className="imageAndNameContainer">
+                    <img src={val.profilepic} className="recommendedFriendPic" />
+                    <div className="nameContainer">
+                        <h3 value={val.firstname}className="recommendedFriendName">{val.firstname}</h3>
+                        <h3 value={val.lastname} className="recommendedFriendName">{val.lastname}</h3>
+                    </div>
+                </div>
+                <button className="addFriendButton">Add Friend</button>
+            </div>
+        })
+
         return (
             <div className="Home">
                 <NavBar />
@@ -49,18 +67,18 @@ class Home extends Component {
                             <div className="sortedBy">
                                 <h4 >Sorted By</h4>
                                 <select className="sortingDropdown">
-                                    <option>First Name</option>
-                                    <option>Last Name</option>
-                                    <option>Gender</option>
-                                    <option>Hobby</option>
-                                    <option>Hair Color</option>
-                                    <option>Eye Color</option>
-                                    <option>Birthday</option>
+                                    <option value="firstName">First Name</option>
+                                    <option value="lastName">Last Name</option>
+                                    <option value="gender">Gender</option>
+                                    <option value="hobby">Hobby</option>
+                                    <option value="hairColor">Hair Color</option>
+                                    <option value="eyeColor">Eye Color</option>
+                                    <option value="birthDay">Birthday</option>
                                 </select>
                             </div>
                         </div>
                         <div className="recommendedFriendsContainer">
-                            <div className="recommendedFriend">
+                            {/* <div className="recommendedFriend">
                                 <div className="imageAndNameContainer">
                                     <img className="recommendedFriendPic" />
                                     <div className="nameContainer">
@@ -69,7 +87,8 @@ class Home extends Component {
                                     </div>
                                 </div>
                                 <button className="addFriendButton">Add Friend</button>
-                            </div>
+                            </div> */}
+                            {userCards}
                         </div>
                     </div>
                 </div>
@@ -80,10 +99,11 @@ class Home extends Component {
 
 
 function mapStateToProps(state) {
-    const { user } = state;
+    const { user, allUsers } = state;
 
     return {
-        user
+        user,
+        allUsers
     }
 }
-export default connect(mapStateToProps, { getUser })(Home);
+export default connect(mapStateToProps, { getUser, getAllUsers })(Home);
