@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUser, getAllUsers } from '../../ducks/reducer';
+import _ from 'underscore';
 import '../../App.css';
 
 
@@ -23,19 +24,31 @@ class Home extends Component {
         })
     }
 
+    //THIS IS THE PROJECT FOR THE WEEKEND
+    sortedBy(value) {
+        axios.get('/api/recommended').then(res => {
+            this.props.getAllUsers(res.data);
+        })
+        let filteredUsers = this.props.allUsers.filter( (val) => {
+            return val[value] === this.props.user[value]
+        })
+        this.setState({
+            recommendedUsers: filteredUsers
+        })
+    }
 
 
 
     render() {
         const { getUser } = this.props; //this ONLY WORKS INSIDE THE METHOD
-        console.log(this.props.allUsers)
+        console.log(this.state.recommendedUsers)
 
-        let userCards = this.props.allUsers.map((val, i) => {
+        let userCards = this.state.recommendedUsers.map((val, i) => {
             return <div key={i} className="recommendedFriend">
                 <div className="imageAndNameContainer">
                     <img src={val.profilepic} className="recommendedFriendPic" />
                     <div className="nameContainer">
-                        <h3 value={val.firstname}className="recommendedFriendName">{val.firstname}</h3>
+                        <h3 value={val.firstname} className="recommendedFriendName">{val.firstname}</h3>
                         <h3 value={val.lastname} className="recommendedFriendName">{val.lastname}</h3>
                     </div>
                 </div>
@@ -66,28 +79,18 @@ class Home extends Component {
                             <h3 className="recommendedFriends">Recommended Friends</h3>
                             <div className="sortedBy">
                                 <h4 >Sorted By</h4>
-                                <select className="sortingDropdown">
-                                    <option value="firstName">First Name</option>
-                                    <option value="lastName">Last Name</option>
+                                <select onChange={(e) => this.sortedBy(e.target.value)} className="sortingDropdown">
+                                    <option value="firstname">First Name</option>
+                                    <option value="lastname">Last Name</option>
                                     <option value="gender">Gender</option>
                                     <option value="hobby">Hobby</option>
-                                    <option value="hairColor">Hair Color</option>
-                                    <option value="eyeColor">Eye Color</option>
-                                    <option value="birthDay">Birthday</option>
+                                    <option value="haircolor">Hair Color</option>
+                                    <option value="eyecolor">Eye Color</option>
+                                    <option value="birthday">Birthday</option>
                                 </select>
                             </div>
                         </div>
                         <div className="recommendedFriendsContainer">
-                            {/* <div className="recommendedFriend">
-                                <div className="imageAndNameContainer">
-                                    <img className="recommendedFriendPic" />
-                                    <div className="nameContainer">
-                                        <h3 className="recommendedFriendName">Townes</h3>
-                                        <h3 className="recommendedFriendName">Falcon</h3>
-                                    </div>
-                                </div>
-                                <button className="addFriendButton">Add Friend</button>
-                            </div> */}
                             {userCards}
                         </div>
                     </div>
