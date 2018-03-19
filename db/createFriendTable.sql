@@ -1,0 +1,3 @@
+CREATE TABLE friends
+(id INTEGER PRIMARY KEY,
+friend_id INTEGER)
