@@ -6,6 +6,7 @@ const express = require('express')
     , passport = require('passport')
     , Auth0Strategy = require('passport-auth0')
     , userController = require('./controllers/userController')
+    , friendController = require('./controllers/friendController')
     , PORT = 4000;
 
 
@@ -96,6 +97,10 @@ app.patch('/api/user/patch/:id', userController.updateUserInfo);
 app.get('/api/recommended', userController.getAllUsers);
 
 
+
+//FRIEND ENPOINTS
+app.get('/api/friend/list', friendController.getFriendList);
+app.post('/api/friend/add', friendController.addFriends);
 
 
 app.listen(PORT, () => { console.log(`Listening on port: ${PORT}`) })

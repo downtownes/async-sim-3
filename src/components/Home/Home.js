@@ -3,7 +3,7 @@ import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getUser, getAllUsers } from '../../ducks/reducer';
+import { getUser, getAllUsers, getFriends } from '../../ducks/reducer';
 import _ from 'underscore';
 import '../../App.css';
 
@@ -12,15 +12,17 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            recommendedUsers: []
+            recommendedUsers: [],
+            friendsList: []
         }
     }
 
     componentDidMount() {
-        axios.all([axios.get('/api/auth/authenticated'), axios.get('/api/recommended')]).then(res => {
-            console.log(res.data)
+        axios.all([axios.get('/api/auth/authenticated'), axios.get('/api/recommended'), axios.get('/api/friend/list')]).then(res => {
+            console.log(res[1].data)
             this.props.getUser(res[0].data);
             this.props.getAllUsers(res[1].data);
+            this.props.getFriends(res[2].data);
         })
     }
 
@@ -29,19 +31,37 @@ class Home extends Component {
         axios.get('/api/recommended').then(res => {
             this.props.getAllUsers(res.data);
         })
-        let filteredUsers = this.props.allUsers.filter( (val) => {
+        let filteredUsers = this.props.allUsers.filter((val) => {
             return val[value] === this.props.user[value]
         })
+
+        //Tuesday or homework
+        // let filteredFriends = filteredUsers.filter( (userId, i) => {
+        //     return this.props.usersFriends.map( friendId => friendId.id === userId) 
+        // })
+        console.log(filteredFriends);
         this.setState({
-            recommendedUsers: filteredUsers
+            recommendedUsers: filteredFriends
+        })
+    }
+
+    addFriend(friendId) {
+        let friend = {
+            id: this.props.user.id,
+            friend_id: friendId
+        }
+        axios.post('/api/friend/add', friend).then(res => {
+            axios.get('/api/recommended').then(res => {
+                this.props.getAllUsers(res.data);
+            })
         })
     }
 
 
-
     render() {
         const { getUser } = this.props; //this ONLY WORKS INSIDE THE METHOD
-        console.log(this.state.recommendedUsers)
+        console.log(this.props.usersFriends);
+        console.log(this.state.recommendedUsers);
 
         let userCards = this.state.recommendedUsers.map((val, i) => {
             return <div key={i} className="recommendedFriend">
@@ -52,7 +72,7 @@ class Home extends Component {
                         <h3 value={val.lastname} className="recommendedFriendName">{val.lastname}</h3>
                     </div>
                 </div>
-                <button className="addFriendButton">Add Friend</button>
+                <button value={val.id} className="addFriendButton" onClick={ (e) => this.addFriend(e.target.value)}>Add Friend</button>
             </div>
         })
 
@@ -102,11 +122,12 @@ class Home extends Component {
 
 
 function mapStateToProps(state) {
-    const { user, allUsers } = state;
+    const { user, allUsers, usersFriends } = state;
 
     return {
         user,
-        allUsers
+        allUsers,
+        usersFriends
     }
 }
-export default connect(mapStateToProps, { getUser, getAllUsers })(Home);
+export default connect(mapStateToProps, { getUser, getAllUsers, getFriends })(Home);

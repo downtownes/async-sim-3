@@ -9,7 +9,8 @@ const initialState = {
     birthDay: '',
     birthMonth: '',
     birthYear: '',
-    allUsers: []
+    allUsers: [],
+    usersFriends: []
 }
 
 const USER = "USER";
@@ -23,6 +24,7 @@ const BIRTHDAY = "BIRTHDAY";
 const BIRTHMONTH = "BIRTHMONTH";
 const BIRTHYEAR = "BIRTHYEAR";
 const ALLUSERS = "ALLUSERS";
+const USERSFRIENDS = "USERSFRIENDS";
 
 function reducer(state = initialState, action) {
     switch (action.type) {
@@ -45,7 +47,9 @@ function reducer(state = initialState, action) {
         case BIRTHYEAR:
             return Object.assign({}, state, { birthYear: action.payload });
         case ALLUSERS:
-            return Object.assign({}, state, {allUsers: action.payload})
+            return Object.assign({}, state, {allUsers: action.payload});
+        case USERSFRIENDS: 
+            return Object.assign({}, state, {usersFriends: action.payload})
         default:
             return state;
     }
@@ -127,6 +131,13 @@ export function getAllUsers(allUsers) {
     return {
         type: ALLUSERS,
         payload: allUsers
+    }
+}
+
+export function getFriends(usersFriends) {
+    return {
+        type: USERSFRIENDS,
+        payload: usersFriends
     }
 }
 

@@ -1,3 +1,3 @@
 CREATE TABLE friends
-(id INTEGER PRIMARY KEY,
+(match_id INTEGER PRIMARY KEY,
 friend_id INTEGER)
