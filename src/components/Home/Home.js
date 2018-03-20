@@ -13,37 +13,64 @@ class Home extends Component {
         super(props);
         this.state = {
             recommendedUsers: [],
-            friendsList: []
+            friendsList: [],
+            usersFiltered: [],
+            completeFilter: []
         }
+        this.sortedBy = this.sortedBy.bind(this);
     }
 
     componentDidMount() {
         axios.all([axios.get('/api/auth/authenticated'), axios.get('/api/recommended'), axios.get('/api/friend/list')]).then(res => {
-            console.log(res[1].data)
+
             this.props.getUser(res[0].data);
             this.props.getAllUsers(res[1].data);
             this.props.getFriends(res[2].data);
         })
     }
 
+
     //THIS IS THE PROJECT FOR THE WEEKEND
     sortedBy(value) {
+
         axios.get('/api/recommended').then(res => {
             this.props.getAllUsers(res.data);
         })
+
         let filteredUsers = this.props.allUsers.filter((val) => {
             return val[value] === this.props.user[value]
         })
-
-        //Tuesday or homework
-        // let filteredFriends = filteredUsers.filter( (userId, i) => {
-        //     return this.props.usersFriends.map( friendId => friendId.id === userId) 
-        // })
-        console.log(filteredFriends);
+        console.log(filteredUsers)
+        let filteredUsersArray = filteredUsers;
+        console.log(this.state.usersFiltered)
+        let justFriendIds = [];
+        this.props.usersFriends.map((val, i) => {
+            justFriendIds.push(val.friend_id);
+        })
+        let filteredFriends = filteredUsersArray.filter((userId, i) => {
+            return justFriendIds.indexOf(userId.id) === -1;
+        })
         this.setState({
             recommendedUsers: filteredFriends
         })
     }
+
+    // sortWithFriends(value) {
+    //     this.sortedBy(value);
+    //     let justFriendIds = [];
+    //     console.log(this.state.usersFiltered)
+    //     this.props.usersFriends.map((val, i) => {
+    //         justFriendIds.push(val.friend_id);
+    //     })
+    //     let filteredFriends = this.state.usersFiltered.filter((userId, i) => {
+    //         return justFriendIds.indexOf(userId.id) === -1;
+    //     })
+    //     console.log(this.state.usersFiltered);
+    //     console.log(filteredFriends)
+    //     this.setState({
+    //         recommendedUsers: filteredFriends
+    //     })
+    // }
 
     addFriend(friendId) {
         let friend = {
@@ -51,16 +78,15 @@ class Home extends Component {
             friend_id: friendId
         }
         axios.post('/api/friend/add', friend).then(res => {
-            axios.get('/api/recommended').then(res => {
-                this.props.getAllUsers(res.data);
-            })
+            this.props.history.push('/home');
         })
     }
 
 
     render() {
-        const { getUser } = this.props; //this ONLY WORKS INSIDE THE METHOD
-        console.log(this.props.usersFriends);
+        const { getUser } = this.props; //this ONLY WORKS INSIDE THE RENDER METHOD
+        console.log(this.props.allUsers);
+        console.log(this.state.usersFiltered);
         console.log(this.state.recommendedUsers);
 
         let userCards = this.state.recommendedUsers.map((val, i) => {
@@ -72,7 +98,7 @@ class Home extends Component {
                         <h3 value={val.lastname} className="recommendedFriendName">{val.lastname}</h3>
                     </div>
                 </div>
-                <button value={val.id} className="addFriendButton" onClick={ (e) => this.addFriend(e.target.value)}>Add Friend</button>
+                <button value={val.id} className="addFriendButton" onClick={(e) => this.addFriend(e.target.value)}>Add Friend</button>
             </div>
         })
 
@@ -131,3 +157,18 @@ function mapStateToProps(state) {
     }
 }
 export default connect(mapStateToProps, { getUser, getAllUsers, getFriends })(Home);
+
+
+        // let justFriendIds = [];
+        // this.props.usersFriends.map((val, i) => {
+        //     justFriendIds.push(val.friend_id);
+        // })
+        //Tuesday or homework
+        // let filteredFriends = filteredUsers.filter((userId, i) => {
+        //     return justFriendIds.indexOf(userId.id) === -1;
+        // })
+        // } else {
+        //     this.setState({
+        //         recommendedUsers: this.state.usersFiltered
+        //     })
+        // }
