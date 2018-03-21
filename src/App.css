@@ -315,3 +315,74 @@ html {
 .profileInfoTitles {
   margin-bottom: 0;
 }
+
+.Search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchMainContainer {
+  width: 60%;
+  height: 100vh;
+  margin-top: 20px;
+  align-items: center;
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.searchFilteringTools {
+  width: 64%;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px 0 40px 20px
+}
+
+.searchSelectDropdown {
+  width: 120px;
+  height: 40px;
+  border-radius: 1px;
+  background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb);
+  border: solid 1px #ccc3c3;
+  border-radius: 4px;
+}
+
+.searchInputBox {
+  width: 220px;
+  height: 34px;
+}
+
+.searchContainerHoldingFriendContainer {
+  width: 95%;
+  height: 80%;
+  margin-left: 40px;
+}
+
+.searchFriendsContainer {
+  width: inherit;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.searchSearchButton {
+  width: 140px;
+  height: 40px;
+  border: none;
+  border-radius: 1px;
+  background-image: radial-gradient(circle at 50%-46%, #737373, #403d39);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.searchResetButton {
+  width: 140px;
+  height: 40px;
+  border-radius: 1px;
+  background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb);
+  border: solid 1px #ccc3c3;
+}

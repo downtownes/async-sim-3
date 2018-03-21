@@ -10,7 +10,8 @@ const initialState = {
     birthMonth: '',
     birthYear: '',
     allUsers: [],
-    usersFriends: []
+    usersFriends: [],
+    paginatedUsers: []
 }
 
 const USER = "USER";
@@ -25,6 +26,7 @@ const BIRTHMONTH = "BIRTHMONTH";
 const BIRTHYEAR = "BIRTHYEAR";
 const ALLUSERS = "ALLUSERS";
 const USERSFRIENDS = "USERSFRIENDS";
+const PAGINATEDUSERS = "PAGINATEDUSERS";
 
 function reducer(state = initialState, action) {
     switch (action.type) {
@@ -49,7 +51,9 @@ function reducer(state = initialState, action) {
         case ALLUSERS:
             return Object.assign({}, state, {allUsers: action.payload});
         case USERSFRIENDS: 
-            return Object.assign({}, state, {usersFriends: action.payload})
+            return Object.assign({}, state, {usersFriends: action.payload});
+        case PAGINATEDUSERS:
+            return Object.assign({}, state, {paginatedUsers: action.payload});
         default:
             return state;
     }
@@ -138,6 +142,13 @@ export function getFriends(usersFriends) {
     return {
         type: USERSFRIENDS,
         payload: usersFriends
+    }
+}
+
+export function getPaginatedUsers(paginatedUsers) {
+    return {
+        type: PAGINATEDUSERS,
+        payload: paginatedUsers
     }
 }
 

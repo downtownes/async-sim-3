@@ -24,5 +24,17 @@ module.exports = {
                 user.id !== req.session.passport.user)
                 res.status(200).send(allUsers);
         })
+    },
+
+    getPaginatedUsers: (req, res, next) => {
+        const db = req.app.get('db');
+        let userId = req.session.passport.user;
+        let count = 0;
+
+        db.getPaginatedFriends(userId, req.query.page).then(users => {
+            console.log(users);
+            count = users.length+1;//THIS DOES NOT WORK. THIS WILL ONLY GIVE A MAX OF 5. WE NEED THE COUNT FOR ALL OF THE USERS ON THE DATABASE THAT ARE NOT THE CURRENTLY LOGGED IN USER
+            res.status(200).send([users, count])
+        })
     }
 }

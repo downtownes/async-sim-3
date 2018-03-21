@@ -10,7 +10,7 @@ export default class NavBar extends Component {
                 <div className="lefthandIcons">
                     <h2 className="heloTitle">Helo</h2>
                     <Link to="/home"><img className="homeIcon" src="https://github.com/DevMountain/simulation-3/blob/master/assets/home.png?raw=true" /></Link>
-                    <img className="searchIcon" src="https://github.com/DevMountain/simulation-3/blob/master/assets/search.png?raw=true" />
+                    <Link to="/search"><img className="searchIcon" src="https://github.com/DevMountain/simulation-3/blob/master/assets/search.png?raw=true" /></Link>
                 </div>
                 <h3 className="dashboardTitle">Dashboard</h3>
                 <a href={'http://localhost:4000/auth/logout'}>

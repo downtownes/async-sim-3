@@ -18,9 +18,9 @@ module.exports = {
             } else {
                 friends.filter(val => {
                     val.match_id === req.session.passport.user
-                    res.status(200).send(friends);
-                }).catch();
+                })
             }
+            res.status(200).send(friends);
         })
     }
 }
