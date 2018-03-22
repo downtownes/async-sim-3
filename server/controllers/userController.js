@@ -29,12 +29,25 @@ module.exports = {
     getPaginatedUsers: (req, res, next) => {
         const db = req.app.get('db');
         let userId = req.session.passport.user;
-        let count = 0;
+        let userCount;
+            db.countPages(userId).then(count => {
+                console.log('count', count[0].count)
+                userCount = count[0].count;
+            })
 
         db.getPaginatedFriends(userId, req.query.page).then(users => {
-            console.log(users);
-            count = users.length+1;//THIS DOES NOT WORK. THIS WILL ONLY GIVE A MAX OF 5. WE NEED THE COUNT FOR ALL OF THE USERS ON THE DATABASE THAT ARE NOT THE CURRENTLY LOGGED IN USER
-            res.status(200).send([users, count])
+            console.log('userCount', users);
+            // count = users.length+1;//THIS DOES NOT WORK. THIS WILL ONLY GIVE A MAX OF 5. WE NEED THE COUNT FOR ALL OF THE USERS ON THE DATABASE THAT ARE NOT THE CURRENTLY LOGGED IN USER
+            res.status(200).send([users, userCount])
+        })
+    },
+
+    getFilteredusers: (req, res, next) => {
+        const db = req.app.get('db');
+        let userId = req.session.passport.user;
+
+        db.getByFirstName(userId, req.query.firstName, req.query.page).then(users => {
+            res.status(200).send(users);
         })
     }
 }

@@ -386,3 +386,32 @@ html {
   background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb);
   border: solid 1px #ccc3c3;
 }
+
+.searchPaginationButtonContainer {
+  width: 80%;
+  height: 40px;
+  margin: auto;
+  background-image: linear-gradient(97deg, #ff7a6e, #ff9970);
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1), 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectedPage {
+  width: 60px;
+  height: 30px;
+  color: white;
+  background: black;
+  border: none;
+  margin-left: 10px;
+}
+
+.unselectedPages {
+  width: 30px;
+  height: 30px;
+  color: black;
+  background: white;
+  border: none;
+  margin-left: 10px;
+}

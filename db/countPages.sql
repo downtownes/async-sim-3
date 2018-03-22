@@ -1,2 +1,3 @@
 SELECT count(id)
-FROM users;
+FROM users
+WHERE id != $1;

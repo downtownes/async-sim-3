@@ -10,7 +10,10 @@ class Search extends Component {
     constructor() {
         super();
         this.state = {
-            paginatedUsers: []
+            paginatedUsers: [],
+            numberOfUsers: 0,
+            currentPage: 1,
+            dropdownSelection: ''
         }
     }
 
@@ -18,13 +21,46 @@ class Search extends Component {
         axios.get(`/api/user/list?page=${0}`).then(res => {
             console.log(res.data);
             this.setState({
-                paginatedUsers: res.data
+                paginatedUsers: res.data[0],
+                numberOfUsers: res.data[1]
             })
         })
     }
 
+    buttons(numOfUsers = this.state.numberOfUsers) {
+        numOfUsers = numOfUsers /= 4;
+        numOfUsers = Math.ceil(numOfUsers);
+        console.log(numOfUsers);
+        let buttonArray = [];
+        for (var i = 1; i <= numOfUsers; i++) {
+            console.log(i)
+            buttonArray.push(<button className={this.state.currentPage === i ? 'selectedPage' : 'unselectedPages'} onClick={(e) => this.pageChange(e.target.value)} value={i} key={i}>{this.state.currentPage === i ? `Page ${i}` : i}</button>)
+        }
+        return buttonArray.map(val => val)
+    }
+
+    pageChange(pageNumber) {
+        console.log(pageNumber)
+        this.setState({
+            currentPage: +pageNumber//adding the plus sign is going to convert this to a number
+        })
+        pageNumber = pageNumber * 4 - 4;
+        console.log(pageNumber)
+        axios.get(`/api/user/list?page=${pageNumber}`).then(res => {
+            console.log(res.data)
+            this.setState({
+                paginatedUsers: res.data[0]
+            })
+        })
+    }
+
+    onChange() {
+        axios.get(`/api/user/search?search=0&firstName=`)
+    }
+
     render() {
         console.log(this.props.paginatedUsers);
+        console.log(this.state)
         let userCards = this.state.paginatedUsers.map((val, i) => {
             return (
                 <div key={i} className="recommendedFriend">
@@ -40,14 +76,16 @@ class Search extends Component {
             )
         })
 
+        let pageButtons = this.buttons();
+
         return (
             <div className="Search">
                 <NavBar />
                 <div className="searchMainContainer">
                     <div className="searchFilteringTools">
                         <select className="searchSelectDropdown">
-                            <option>First Name</option>
-                            <option>Last Name</option>
+                            <option value="firstName" >First Name</option>
+                            <option value="lastName" autofocus>Last Name</option>
                         </select>
                         <input className="searchInputBox" />
                         <button className="searchSearchButton">Search</button>
@@ -58,8 +96,8 @@ class Search extends Component {
                             {userCards}
                         </div>
                     </div>
-                    <div>
-                        <button>Page 1</button>
+                    <div className="searchPaginationButtonContainer">
+                        {pageButtons}
                     </div>
                 </div>
             </div>
