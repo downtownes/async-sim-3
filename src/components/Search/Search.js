@@ -13,7 +13,8 @@ class Search extends Component {
             paginatedUsers: [],
             numberOfUsers: 0,
             currentPage: 1,
-            dropdownSelection: ''
+            dropdownSelection: 'firstName',
+            inputBox: ''
         }
     }
 
@@ -54,8 +55,33 @@ class Search extends Component {
         })
     }
 
-    onChange() {
-        axios.get(`/api/user/search?search=0&firstName=`)
+    dropdownChange(firstOrLast) {
+        this.setState({
+            dropdownSelection: firstOrLast
+        })
+    }
+
+    inputChange(name) {
+        this.setState({
+            inputBox: name
+        })
+    }
+
+    submitSearch(){
+        axios.get(`/api/user/search?${this.state.dropdownSelection}=${this.state.inputBox}&${this.state.currentPage}=${0}`).then(res => {
+            this.setState({
+                paginatedUsers: res.data
+            })
+        })
+    }
+
+    resetButton() {
+        axios.get(`/api/user/list?page=${0}`).then(res => {
+            this.setState({
+                paginatedUsers: res.data[0],
+                numberOfUsers: res.data[1]
+            })
+        })
     }
 
     render() {
@@ -83,13 +109,13 @@ class Search extends Component {
                 <NavBar />
                 <div className="searchMainContainer">
                     <div className="searchFilteringTools">
-                        <select className="searchSelectDropdown">
-                            <option value="firstName" >First Name</option>
-                            <option value="lastName" autofocus>Last Name</option>
+                        <select onChange={(e) => this.dropdownChange(e.target.value)} className="searchSelectDropdown">
+                            <option value="firstName" selected>First Name</option>
+                            <option value="lastName" >Last Name</option>
                         </select>
-                        <input className="searchInputBox" />
-                        <button className="searchSearchButton">Search</button>
-                        <button className="searchResetButton">Reset</button>
+                        <input onChange={(e) => this.inputChange(e.target.value)} className="searchInputBox" />
+                        <button onClick={() => this.submitSearch()} className="searchSearchButton">Search</button>
+                        <button onClick={() => this.resetButton()} className="searchResetButton">Reset</button>
                     </div>
                     <div className="searchContainerHoldingFriendContainer">
                         <div className="searchFriendsContainer">

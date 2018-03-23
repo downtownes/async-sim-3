@@ -22,7 +22,7 @@ module.exports = {
             allUsers = allUsers.filter(user =>
                 // console.log('user', req.session.passport.user);
                 user.id !== req.session.passport.user)
-                res.status(200).send(allUsers);
+            res.status(200).send(allUsers);
         })
     },
 
@@ -30,10 +30,10 @@ module.exports = {
         const db = req.app.get('db');
         let userId = req.session.passport.user;
         let userCount;
-            db.countPages(userId).then(count => {
-                console.log('count', count[0].count)
-                userCount = count[0].count;
-            })
+        db.countPages(userId).then(count => {
+            console.log('count', count[0].count)
+            userCount = count[0].count;
+        })
 
         db.getPaginatedFriends(userId, req.query.page).then(users => {
             console.log('userCount', users);
@@ -42,12 +42,18 @@ module.exports = {
         })
     },
 
-    getFilteredusers: (req, res, next) => {
+    getFilteredUsers: (req, res, next) => {
         const db = req.app.get('db');
         let userId = req.session.passport.user;
 
-        db.getByFirstName(userId, req.query.firstName, req.query.page).then(users => {
-            res.status(200).send(users);
-        })
+        if (req.query.firstName) {
+            db.getByFirstName(userId, req.query.firstName, req.query.page).then(users => {
+                res.status(200).send(users);
+            })
+        } else if(req.query.lastName){
+            db.getByLastName(userId, req.query.lastName, req.query.page).then(users => {
+                res.status(200).send(users);
+            })
+        }
     }
 }

@@ -91,7 +91,7 @@ app.get('/auth/logout', function(req, res){
 //User Endpoints
 app.patch('/api/user/patch/:id', userController.updateUserInfo);
 app.get('/api/user/list', userController.getPaginatedUsers);
-// app.get('/api/user/search', userController.getFilteredUsers);
+app.get('/api/user/search', userController.getFilteredUsers);
 
 
 //RECOMMENDED ENDPOINTS
