@@ -14,16 +14,22 @@ class Search extends Component {
             numberOfUsers: 0,
             currentPage: 1,
             dropdownSelection: 'firstName',
-            inputBox: ''
+            inputBox: '',
+            friendIds: []
         }
     }
 
     componentDidMount() {
-        axios.get(`/api/user/list?page=${0}`).then(res => {
+        axios.all([axios.get(`/api/user/list?page=${0}`), axios.get('/api/friend/list')]).then(res => {
             console.log(res.data);
+            let idArray = [];
+            res[1].data.map((val, i) => {
+                idArray.push(val.friend_id)
+            })
             this.setState({
-                paginatedUsers: res.data[0],
-                numberOfUsers: res.data[1]
+                paginatedUsers: res[0].data[0],
+                numberOfUsers: res[0].data[1],
+                friendIds: idArray
             })
         })
     }
@@ -88,6 +94,7 @@ class Search extends Component {
         console.log(this.props.paginatedUsers);
         console.log(this.state)
         let userCards = this.state.paginatedUsers.map((val, i) => {
+            if(this.state.friendIds.length > 0)
             return (
                 <div key={i} className="recommendedFriend">
                     <div className="imageAndNameContainer">
@@ -97,7 +104,8 @@ class Search extends Component {
                             <h3 value={val.lastname} className="recommendedFriendName">{val.lastname}</h3>
                         </div>
                     </div>
-                    <button value={val.id} className="addFriendButton" onClick={(e) => this.addFriend(e.target.value)}>Add Friend</button>
+                    {this.state.friendIds.indexOf(val.id) == -1 ? <button value={val.id} className="addFriendButton" onClick={(e) => this.addFriend(e.target.value)}>Add Friend</button> : <button value={val.id} className="removeFriendButton" onClick={(e) => this.addFriend(e.target.value)}>Remove Friend</button>}
+                    {/* <button value={val.id} className="addFriendButton" onClick={(e) => this.addFriend(e.target.value)}>Add Friend</button> */}
                 </div>
             )
         })

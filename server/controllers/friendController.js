@@ -4,6 +4,7 @@ module.exports = {
         console.log(req.body)
 
         db.addFriend(req.body.id, req.body.friend_id).then(friends => {
+            console.log('friendlies', friends);
             res.status(200).send(friends);
         })
     },

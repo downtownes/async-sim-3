@@ -1,3 +1,4 @@
 INSERT INTO friends
 (match_id, friend_id)
-VALUES ($1, $2);
+VALUES ($1, $2)
+RETURNING match_id, friend_id;

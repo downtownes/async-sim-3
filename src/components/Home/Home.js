@@ -15,9 +15,11 @@ class Home extends Component {
             recommendedUsers: [],
             friendsList: [],
             usersFiltered: [],
-            completeFilter: []
+            completeFilter: [],
+            selectedBox: ''
         }
         this.sortedBy = this.sortedBy.bind(this);
+        this.addFriend = this.addFriend.bind(this);
     }
 
     componentDidMount() {
@@ -32,6 +34,9 @@ class Home extends Component {
 
     //THIS IS THE PROJECT FOR THE WEEKEND
     sortedBy(value) {
+        this.setState({
+            selectedBox: value
+        })
 
         axios.get('/api/recommended').then(res => {
             this.props.getAllUsers(res.data);
@@ -44,9 +49,11 @@ class Home extends Component {
         let filteredUsersArray = filteredUsers;
         console.log(this.state.usersFiltered)
         let justFriendIds = [];
+        console.log(this.props.usersFriends);
         this.props.usersFriends.map((val, i) => {
             justFriendIds.push(val.friend_id);
         })
+        console.log(this.props.usersFriends);
         let filteredFriends = filteredUsersArray.filter((userId, i) => {
             return justFriendIds.indexOf(userId.id) === -1;
         })
@@ -55,37 +62,23 @@ class Home extends Component {
         })
     }
 
-    // sortWithFriends(value) {
-    //     this.sortedBy(value);
-    //     let justFriendIds = [];
-    //     console.log(this.state.usersFiltered)
-    //     this.props.usersFriends.map((val, i) => {
-    //         justFriendIds.push(val.friend_id);
-    //     })
-    //     let filteredFriends = this.state.usersFiltered.filter((userId, i) => {
-    //         return justFriendIds.indexOf(userId.id) === -1;
-    //     })
-    //     console.log(this.state.usersFiltered);
-    //     console.log(filteredFriends)
-    //     this.setState({
-    //         recommendedUsers: filteredFriends
-    //     })
-    // }
-
     addFriend(friendId) {
         let friend = {
             id: this.props.user.id,
             friend_id: friendId
         }
         axios.post('/api/friend/add', friend).then(res => {
+            console.log(res.data[0])
             this.props.history.push('/home');
+            this.props.usersFriends.push(res.data[0])
+            this.sortedBy(this.state.selectedBox);
         })
     }
 
 
     render() {
         const { getUser } = this.props; //this ONLY WORKS INSIDE THE RENDER METHOD
-        console.log(this.props.allUsers);
+        console.log(this.props.usersFriends);
         console.log(this.state.usersFiltered);
         console.log(this.state.recommendedUsers);
 
